@@ -10,7 +10,7 @@ Just needed to add the legagy dependency :
 	<dependency>
 		<groupId>org.fugerit.java.legacy</groupId>
 		<artifactId>fj-daogen-legacy-v0-4-2-7</artifactId>
-		<version>0.1.0</version>
+		<version>${fj-daogen-legagy-version}</version>
 	</dependency>
 ```
 
@@ -38,7 +38,7 @@ To the plugin configuration only (not to the project) :
 					<dependency>
 						<groupId>org.fugerit.java.legacy</groupId>
 						<artifactId>fj-daogen-legacy-v0-4-2-7</artifactId>
-						<version>0.1.0</version>
+						<version>${fj-daogen-legagy-version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
