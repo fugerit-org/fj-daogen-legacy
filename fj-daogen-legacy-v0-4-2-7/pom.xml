@@ -36,14 +36,10 @@
 			<artifactId>fj-core</artifactId>
 		</dependency>	
 
-		<!--
-
 		<dependency>
 			<groupId>org.fugerit.java.legacy</groupId>
 			<artifactId>fj-daogen-legacy-base</artifactId>
 		</dependency>		
-	
-		-->
 	
 	</dependencies>
 

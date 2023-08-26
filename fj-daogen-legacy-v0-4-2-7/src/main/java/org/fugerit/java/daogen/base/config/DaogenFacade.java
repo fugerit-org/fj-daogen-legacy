@@ -13,6 +13,7 @@ import org.fugerit.java.core.javagen.JavaGenerator;
 import org.fugerit.java.core.lang.helpers.ClassHelper;
 import org.fugerit.java.daogen.base.gen.DaogenBasicDecorator;
 import org.fugerit.java.daogen.base.gen.DaogenBasicGenerator;
+import org.fugerit.java.daogen.legagy.base.helper.DaogenFacadeLegagyConfigHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,21 +70,13 @@ public class DaogenFacade {
 		}
 	}
 	
+	public static final String DAOGEN_LEGAGY_VERSION = "0.4.2.7";
 	
 	public static void generate( InputStream fis, Properties overrideProperties ) throws ConfigException {
 		try {
+			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "START");
 			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis );
-			if ( overrideProperties != null ) {
-				logger.info( "override properties -> {}", overrideProperties );
-				for ( Object k : overrideProperties.keySet() ) {
-					String key = k.toString();
-					String value = overrideProperties.getProperty(key);
-					logger.info( "ovverride {} -> {}", key, value );
-					daogenConfig.getGeneralProps().setProperty(key, value);
-				}
-				daogenConfig.getGeneralProps().keySet().stream().sorted().forEach( 
-						k -> logger.info( "prop key : {} value : {}", k, daogenConfig.getGeneralProps().getProperty( k.toString() ) ) );
-			}
+			DaogenFacadeLegagyConfigHelper.overridePropertiesHelper( daogenConfig.getGeneralProps(), overrideProperties );
 			for ( DaogenGeneratorCatalog generatorCatalog : daogenConfig.getGeneratorCatalogs() ) {
 				generate(daogenConfig, generatorCatalog);
 			}
@@ -93,6 +86,8 @@ public class DaogenFacade {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ConfigException( "Error during DAO generation", e );
+		} finally {
+			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "END");
 		}
 	}
 	
