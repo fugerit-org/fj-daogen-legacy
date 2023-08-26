@@ -1,0 +1,244 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.fugerit.java</groupId>
+		<artifactId>fj-bom</artifactId>
+		<version>1.2.4</version>
+		<relativePath></relativePath>
+	</parent>
+
+	<groupId>org.fugerit.java.legacy</groupId>
+	<artifactId>fj-daogen-legacy</artifactId>
+
+	<version>0.1.0</version>
+	<packaging>pom</packaging>
+
+	<name>fj-daogen-legacy</name>
+	<description>Fugerit Java Data Access Generation API (DAOGEN)</description>
+	<url>https://www.fugerit.org/perm/mars</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version-compliance>8</java-version-compliance>
+	    <maven.compiler.source>${java-version-compliance}</maven.compiler.source>
+	    <maven.compiler.target>${java-version-compliance}</maven.compiler.target>	
+	    <maven.compiler.release>${java-version-compliance}</maven.compiler.release>
+	    <maven.test.skip>true</maven.test.skip>
+		<fj-version>8.2.0</fj-version>  	
+		<fj-daogen-version>1.1.2</fj-daogen-version>  	
+		<fj-daogen-legagy-version>${project.version}</fj-daogen-legagy-version>  		 	
+	</properties>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<url>https://www.fugerit.org</url>
+		<name>Fugerit</name>
+	</organization>
+
+	<developers>
+		<developer>
+			<name>Matteo a.k.a. Fugerit</name>
+			<email>m@fugerit.org</email>
+			<organization>Fugerit</organization>
+			<organizationUrl>https://www.fugerit.org</organizationUrl>
+		</developer>
+		<developer>
+			<name>Daneel</name>
+			<email>d@fugerit.org</email>
+			<organization>Fugerit</organization>
+			<organizationUrl>https://www.fugerit.org</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/fugerit-org/fj-daogen.git</connection>
+		<developerConnection>scm:git:ssh://github.com/fugerit-org/fj-daogen.git</developerConnection>
+		<url>http://github.com/fugerit-org/fj-daogen</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<modules>
+		<module>fj-daogen-legacy-base</module>
+		<module>fj-daogen-legacy-v0-4-2-7</module>
+	</modules>
+
+	<dependencyManagement>
+	
+		<dependencies>
+
+			<dependency>
+				<groupId>org.fugerit.java</groupId>
+				<artifactId>fj-core</artifactId>
+				<version>${fj-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.fugerit.java</groupId>
+				<artifactId>fj-daogen-base</artifactId>
+				<version>${fj-daogen-version}</version>
+			</dependency>	
+
+			<dependency>
+				<groupId>org.fugerit.java.legacy</groupId>
+				<artifactId>fj-daogen-legacy-base</artifactId>
+				<version>${fj-daogen-legagy-version}</version>
+			</dependency>	
+
+		</dependencies>
+
+	</dependencyManagement>
+
+	<dependencies>
+
+		<!-- logging -->
+		<dependency> 
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-api</artifactId>
+		  <scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-slf4j2-impl</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>			
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+
+		<profile>
+			<id>full</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-source-plugin</artifactId>
+							<version>${mvn-source-version}</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>${mvn-javadoc-version}</version>
+						</plugin>
+					</plugins>					
+				</pluginManagement>
+			</build>
+		</profile>
+
+		<profile>
+			<id>dep</id>
+			<build>
+				<plugins>
+				   <plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-dependency-plugin</artifactId>
+			        <version>${mvn-dependency-version}</version>
+			        <executions>
+			          <execution>
+			            <id>copy-dependencies</id>
+			            <phase>package</phase>
+			            <goals>
+			              <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			              <outputDirectory>${project.build.directory}/dependancy/lib</outputDirectory>
+			              <overWriteReleases>false</overWriteReleases>
+			              <overWriteSnapshots>false</overWriteSnapshots>
+			              <overWriteIfNewer>true</overWriteIfNewer>
+			            </configuration>
+			          </execution>
+			        </executions>
+			      </plugin>							
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>test</id>
+			<properties>
+			    <maven.test.skip>false</maven.test.skip>
+			</properties>
+		</profile>		
+
+		<profile>
+			<id>doRelease</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>${nexus-version}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${mvn-gpg-version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+	
+</project>
