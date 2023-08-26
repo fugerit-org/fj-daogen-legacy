@@ -44,4 +44,4 @@ To the plugin configuration only (not to the project) :
 			</plugin>
 ```
 
-NOTE: may be needed to adapt some configuration
+NOTE: may be needed to adapt some configuration.
