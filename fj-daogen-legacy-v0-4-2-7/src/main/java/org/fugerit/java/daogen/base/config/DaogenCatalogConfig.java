@@ -13,9 +13,13 @@ import org.fugerit.java.core.io.helper.CustomPrintWriter;
 import org.fugerit.java.core.io.helper.StreamHelper;
 import org.fugerit.java.core.lang.helpers.ClassHelper;
 import org.fugerit.java.core.util.collection.ListMapStringKey;
+import org.fugerit.java.daogen.legagy.base.helper.DaogenFacadeLegagyConfigHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DaogenCatalogConfig extends CustomListCatalogConfig<DaogenCatalogField, DaogenCatalogEntity> {
 
 	public static final String ATT_DAOGEN_ROOT = "daogen-config";
@@ -54,9 +58,12 @@ public class DaogenCatalogConfig extends CustomListCatalogConfig<DaogenCatalogFi
 		return this.getGeneralProps().getProperty( key );
 	}
 	
-	public static DaogenCatalogConfig loadConfig( InputStream input ) throws Exception {
+	public static DaogenCatalogConfig loadConfig( InputStream input, Properties overrideProperties ) throws Exception {
 		DaogenCatalogConfig config = new DaogenCatalogConfig();
 		load( input , config );
+		// override properties START
+		DaogenFacadeLegagyConfigHelper.overridePropertiesHelper( config.getGeneralProps(), overrideProperties );
+		// override properties END
 		// class config
 		String classConfigPath = config.getGeneralProps().getProperty( DaogenCatalogConstants.GEN_PROP_CLASS_CONFIG, DaogenCatalogConstants.GEN_PROP_CLASS_CONFIG_DEFAULT );
 		try ( InputStream is = StreamHelper.resolveStream( classConfigPath ) ) {
@@ -76,6 +83,7 @@ public class DaogenCatalogConfig extends CustomListCatalogConfig<DaogenCatalogFi
 			}
 		}
 		config.setDecoratorCatalog( daogenDecoratorCatalog );
+		log.info( " generator catalog : {}", daogenDecoratorCatalog.getListMap( "ModelGenerator" ) );
 		// generator catalog
 		String pathGeneratorCatalog = config.getGeneralProps().getProperty( DaogenCatalogConstants.GEN_PROP_GENERATOR_CATALOG, DaogenCatalogConstants.GEN_PROP_GENERATOR_CATALOG_DEFAULT );
 		try ( InputStream is = StreamHelper.resolveStream( pathGeneratorCatalog ) ) {

@@ -75,11 +75,8 @@ public class DaogenFacade {
 	public static void generate( InputStream fis, Properties overrideProperties ) throws ConfigException {
 		try {
 			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "START");
-			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis );
+			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis, overrideProperties );
 			DaogenFacadeLegagyConfigHelper.overridePropertiesHelper( daogenConfig.getGeneralProps(), overrideProperties );
-			for ( DaogenGeneratorCatalog generatorCatalog : daogenConfig.getGeneratorCatalogs() ) {
-				generate(daogenConfig, generatorCatalog);
-			}
 			for ( DaogenGeneratorCatalog generatorCatalog : daogenConfig.getGeneratorCatalogs() ) {
 				generate(daogenConfig, generatorCatalog);
 			}
