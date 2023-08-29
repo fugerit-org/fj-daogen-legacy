@@ -3,6 +3,9 @@
 0.2.0 (2023-08-29)
 ------------------
 * Updated fj-bom to 1.2.5
+* Compatibility layer for [fj-daogen version 0.4.4](https://github.com/fugerit-org/fj-daogen/tree/v0.4.4)
+* Compatibility layer for [fj-daogen version 1.0.1](https://github.com/fugerit-org/fj-daogen/tree/v1.0.1)
+* Added a sample guide for creating a new compatibility layer.
 
 0.1.1 (2023-08-27)
 ------------------

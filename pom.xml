@@ -76,6 +76,7 @@
 		<module>fj-daogen-legacy-base</module>
 		<module>fj-daogen-legacy-v0-4-2-7</module>
 		<module>fj-daogen-legacy-v0-4-4</module>
+		<module>fj-daogen-legacy-v1-0-1</module>
 	</modules>
 
 	<dependencyManagement>
