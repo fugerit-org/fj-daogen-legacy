@@ -22,7 +22,7 @@
 	</licenses>
 	
 	<properties>
-		<fj-version>8.2.0</fj-version>
+		<fj-version>0.8.0</fj-version>
 	</properties>
 	
 	<build>

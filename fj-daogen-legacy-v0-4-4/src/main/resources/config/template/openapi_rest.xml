@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Helper for code generation, OpenAPI</comment>
+
+<entry key="openapi.swagger.info">
+swagger: '2.0'
+info:
+  description: '{0}'
+  title: '{1}'
+  version: '{2}'
+host: {3}
+schemes:
+  - http
+basePath: {4}
+paths:
+</entry>
+
+<entry key="openapi.swagger.info.v3">
+openapi: 3.0.0
+info:
+  title: {1}'
+  description: '{0}'
+  version: '{2}'
+servers:
+  - url: {3}{4}
+    description: Local Development server
+paths:
+</entry>
+
+</properties>
