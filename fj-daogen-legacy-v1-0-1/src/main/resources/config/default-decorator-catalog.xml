@@ -1,0 +1,9 @@
+<decorator-catalog>
+
+  <factory id="ModelGenerator">
+    <data id="FugeritImplModelHelperDecorator" 
+    	type="org.fugerit.java.daogen.base.gen.decorator.DefineImplModelHelperDecorator"
+    	info="package-model"/>          	
+  </factory>
+  
+</decorator-catalog>
