@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import org.fugerit.java.core.cfg.ConfigException;
 import org.fugerit.java.core.cfg.xml.FactoryType;
@@ -12,6 +13,7 @@ import org.fugerit.java.core.javagen.JavaGenerator;
 import org.fugerit.java.core.lang.helpers.ClassHelper;
 import org.fugerit.java.daogen.base.gen.DaogenBasicDecorator;
 import org.fugerit.java.daogen.base.gen.DaogenBasicGenerator;
+import org.fugerit.java.daogen.legagy.base.helper.DaogenFacadeLegagyConfigHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,16 +70,20 @@ public class DaogenFacade {
 		}
 	}
 	
+	public static final String DAOGEN_LEGAGY_VERSION = "0.4.4";
 	
-	public static void generate( InputStream fis ) throws ConfigException {
+	public static void generate( InputStream fis, Properties overrideProperties ) throws ConfigException {
 		try {
-			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis );
+			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "START");
+			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis, overrideProperties );
 			for ( DaogenGeneratorCatalog generatorCatalog : daogenConfig.getGeneratorCatalogs() ) {
 				generate(daogenConfig, generatorCatalog);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ConfigException( "Error during DAO generation", e );
+		} finally {
+			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "END");
 		}
 	}
 	
