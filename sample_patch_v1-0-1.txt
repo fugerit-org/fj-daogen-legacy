@@ -1,0 +1,94 @@
+diff --git a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConfig.java b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConfig.java
+index 72ea7ef..1a4c32d 100644
+--- a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConfig.java
++++ b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConfig.java
+@@ -13,6 +13,7 @@
+ import org.fugerit.java.core.io.helper.StreamHelper;
+ import org.fugerit.java.core.lang.helpers.ClassHelper;
+ import org.fugerit.java.core.util.collection.ListMapStringKey;
++import org.fugerit.java.daogen.legagy.base.helper.DaogenFacadeLegagyConfigHelper;
+ import org.w3c.dom.Element;
+ import org.w3c.dom.NodeList;
+ 
+@@ -54,9 +55,12 @@
+ 		return this.getGeneralProps().getProperty( key );
+ 	}
+ 	
+-	public static DaogenCatalogConfig loadConfig( InputStream input ) throws Exception {
++	public static DaogenCatalogConfig loadConfig( InputStream input, Properties overrideProperties ) throws Exception {
+ 		DaogenCatalogConfig config = new DaogenCatalogConfig();
+ 		load( input , config );
++		// override properties START
++		DaogenFacadeLegagyConfigHelper.overridePropertiesHelper( config.getGeneralProps(), overrideProperties );
++		// override properties END		
+ 		// class config
+ 		String classConfigPath = config.getGeneralProps().getProperty( DaogenCatalogConstants.GEN_PROP_CLASS_CONFIG, DaogenCatalogConstants.GEN_PROP_CLASS_CONFIG_DEFAULT );
+ 		try ( InputStream is = StreamHelper.resolveStream( classConfigPath ) ) {
+diff --git a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConstants.java b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConstants.java
+index e3d7818..478887f 100644
+--- a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConstants.java
++++ b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenCatalogConstants.java
+@@ -14,6 +14,7 @@
+ 	public static final String GEN_PROP_SRC_HELPERS =		 "src-helpers";
+ 	public static final String GEN_PROP_SRC_HELPERS_MAIN =   "SRC-MAIN-JAVA";
+ 	public static final String GEN_PROP_SRC_HELPERS_GEN  =   "SRC-TARGET";
++	public static final String GEN_PROP_SRC_MVN_GENERATED =  "src-mvn-generated-sources";
+ 	
+ 	public static final String GEN_PROP_RELATIONS_LAST =    "relations-last";
+ 	
+diff --git a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenFacade.java b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenFacade.java
+index cbf085e..4db1805 100644
+--- a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenFacade.java
++++ b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenFacade.java
+@@ -5,6 +5,7 @@
+ import java.util.Collection;
+ import java.util.Collections;
+ import java.util.List;
++import java.util.Properties;
+ 
+ import org.fugerit.java.core.cfg.ConfigException;
+ import org.fugerit.java.core.cfg.xml.FactoryType;
+@@ -12,6 +13,7 @@
+ import org.fugerit.java.core.lang.helpers.ClassHelper;
+ import org.fugerit.java.daogen.base.gen.DaogenBasicDecorator;
+ import org.fugerit.java.daogen.base.gen.DaogenBasicGenerator;
++import org.fugerit.java.daogen.legagy.base.helper.DaogenFacadeLegagyConfigHelper;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
+@@ -68,16 +70,20 @@
+ 		}
+ 	}
+ 	
++	public static final String DAOGEN_LEGAGY_VERSION = "1.0.1";
+ 	
+-	public static void generate( InputStream fis ) throws ConfigException {
++	public static void generate( InputStream fis, Properties overrideProperties ) throws ConfigException {
+ 		try {
+-			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis );
++			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "START");
++			DaogenCatalogConfig daogenConfig = DaogenCatalogConfig.loadConfig( fis, overrideProperties );
+ 			for ( DaogenGeneratorCatalog generatorCatalog : daogenConfig.getGeneratorCatalogs() ) {
+ 				generate(daogenConfig, generatorCatalog);
+ 			}
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 			throw new ConfigException( "Error during DAO generation", e );
++		} finally {
++			DaogenFacadeLegagyConfigHelper.printLegagyMode(DAOGEN_LEGAGY_VERSION, "END");
+ 		}
+ 	}
+ 	
+diff --git a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenHelperGenerator.java b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenHelperGenerator.java
+index fbd1d76..df067f4 100644
+--- a/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenHelperGenerator.java
++++ b/fj-daogen-legacy-v1-0-1/src/main/java/org/fugerit/java/daogen/base/config/DaogenHelperGenerator.java
+@@ -3,7 +3,7 @@
+ public class DaogenHelperGenerator {
+ 
+ 	public static String toHelperSourceFolder( DaogenCatalogConfig config ) {
+-		return config.getGeneralProps().getProperty( DaogenCatalogConstants.GEN_PROP_SRC_HELPERS, DaogenCatalogConstants.GEN_PROP_SRC_HELPERS_MAIN );
++		return config.getGeneralProps().getProperty( DaogenCatalogConstants.GEN_PROP_SRC_MVN_GENERATED, DaogenCatalogConstants.GEN_PROP_SRC_HELPERS_MAIN );
+ 	}
+ 	
+ 	public static String toHelperClassName( String className ) {
