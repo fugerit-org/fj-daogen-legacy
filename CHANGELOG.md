@@ -1,5 +1,9 @@
 # fj-daogen-legagy changelog
 
+0.2.0 (2023-08-29)
+------------------
+* Updated fj-bom to 1.2.5
+
 0.1.1 (2023-08-27)
 ------------------
 * Fix overrideProperties handling
