@@ -4,6 +4,8 @@ Legacy module for Venus Mars [fj-daogen](https://github.com/fugerit-org/fj-daoge
 
 This project provide compatibility layers for previous version of fj-daogen, to be used with the fj-daogen-maven-plugin.
 
+[![license](https://img.shields.io/badge/License-Apache%20License%202.0-teal.svg)](https://opensource.org/licenses/Apache-2.0)
+
 See [CHANGELOG.md](CHANGELOG.md) for list of changes in the project.
 
 ## Currently supported versions are : 

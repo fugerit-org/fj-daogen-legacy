@@ -1,5 +1,10 @@
 # fj-daogen-legagy changelog
 
+0.2.1 (2023-08-29)
+------------------
+* Updated fj-core version to 8.2.1
+* Added license badge
+
 0.2.0 (2023-08-29)
 ------------------
 * Updated fj-bom to 1.2.5

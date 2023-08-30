@@ -12,7 +12,7 @@
 	<groupId>org.fugerit.java.legacy</groupId>
 	<artifactId>fj-daogen-legacy</artifactId>
 
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<packaging>pom</packaging>
 
 	<name>fj-daogen-legacy</name>
@@ -27,7 +27,7 @@
 	    <maven.compiler.release>${java-version-compliance}</maven.compiler.release>
 	    <maven.test.skip>true</maven.test.skip>
 	    <!-- base fj-core version, legacgy modules may need to override it -->
-		<fj-version>8.2.0</fj-version>  	 	
+		<fj-version>8.2.1</fj-version>  	 	
 		<fj-daogen-legagy-version>${project.version}</fj-daogen-legagy-version>  		 	
 	</properties>
 
